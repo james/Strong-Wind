@@ -27,4 +27,14 @@ describe Location do
   it "should know if it's a duplicate" do
     Location.new_from_results(@result).duplicate_of?(Location.new_from_results(@result)).should be_true
   end
+  
+  it "should know if it's the same as last" do
+    Location.new_from_results(@result).save
+    Location.new_from_results(@result).same_as_last?.should be_true
+  end
+  
+  it "should not fail if on checking if same as last if it's the first one" do
+    Location.count.should == 0
+    Location.new_from_results(@result).same_as_last?.should be_false
+  end
 end

@@ -13,6 +13,6 @@ class Location < ActiveRecord::Base
   end
   
   def same_as_last?
-    self.duplicate_of?(Location.last)
+    Location.last ? self.duplicate_of?(Location.last) : false
   end
 end
