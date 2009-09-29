@@ -4,7 +4,7 @@
   <% end %>
 </ul>
 
-<div id="events_map" style="height:200px;"></div>
+<div id="events_map" style="height:600px;"></div>
 
 <script type="text/javascript">
 /* <![CDATA[ */
@@ -28,7 +28,7 @@ function initialize_google_map_events_map() {
 
     var events_map_latlng_bounds = new GLatLngBounds();
     events_map_latlng_bounds.extend(new GLatLng(<%= Location.last.lat %>,<%= Location.last.lng %>));
-    events_map.setCenter(events_map_latlng_bounds.getCenter(), 7);
+    events_map.setCenter(events_map_latlng_bounds.getCenter(), 14);
     
     marker_manager = new MarkerManager(events_map);
     
@@ -39,14 +39,8 @@ function initialize_google_map_events_map() {
          var marker_<%= venue.id %> = new GMarker(new GLatLng(<%= venue.lat %>, <%= venue.lng %>), icon);
          
          GEvent.addListener(marker_<%= venue.id %>, "click", function() {
-           marker_<%= venue.id %>.openInfoWindowHtml("<h1>Loading...</h1>");
+           marker_<%= venue.id %>.openInfoWindowHtml("<%= venue.found_at %>");
            
-           $.ajax({
-             type: 'GET',
-             url: '',
-             datatype: "html",
-             success: function(data) {marker_<%= venue.id %>.openInfoWindowHtml(data);}
-           });
          });
          
          marker_manager.addMarker(marker_<%= venue.id %>, 1);
