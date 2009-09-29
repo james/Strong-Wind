@@ -1,4 +1,5 @@
 class Location < ActiveRecord::Base
+  validates_presence_of :lat, :lng
   def self.new_from_results(results)
     new(
       :lat => results["latitude"],
