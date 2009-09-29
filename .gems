@@ -1,1 +1,1 @@
-findmyiphone --source gemcutter.org
+findmyiphone --source gemcutter.org --version '>= 0.2.1'
