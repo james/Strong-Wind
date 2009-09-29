@@ -3,3 +3,64 @@
     <li><%= location.lat %>, <%= location.lng %>, <%= location.accuracy %></li>
   <% end %>
 </ul>
+
+<div id="events_map" style="height:200px;"></div>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+
+var events_map;
+
+function initialize_google_map_events_map() {
+  if(GBrowserIsCompatible()) {
+    events_map = new GMap2(document.getElementById('events_map'));
+    
+    if (self['GoogleMapOnLoad']) {
+      events_map.load = GEvent.addListener(events_map,'load',GoogleMapOnLoad)
+    }
+
+    events_map.addControl(new GSmallZoomControl());
+    events_map.addControl(new GMapTypeControl());
+    
+    events_map.enableDoubleClickZoom();
+    events_map.disableContinuousZoom();
+    events_map.disableScrollWheelZoom();
+
+    var events_map_latlng_bounds = new GLatLngBounds();
+    events_map_latlng_bounds.extend(new GLatLng(<%= Location.last.lat %>,<%= Location.last.lng %>));
+    events_map.setCenter(events_map_latlng_bounds.getCenter(), 7);
+    
+    marker_manager = new MarkerManager(events_map);
+    
+    <% Location.all.each do |venue| %>
+         var icon = new GIcon(G_DEFAULT_ICON);
+         icon.iconSize = new GSize(21, 31)
+   
+         var marker_<%= venue.id %> = new GMarker(new GLatLng(<%= venue.lat %>, <%= venue.lng %>), icon);
+         
+         GEvent.addListener(marker_<%= venue.id %>, "click", function() {
+           marker_<%= venue.id %>.openInfoWindowHtml("<h1>Loading...</h1>");
+           
+           $.ajax({
+             type: 'GET',
+             url: '',
+             datatype: "html",
+             success: function(data) {marker_<%= venue.id %>.openInfoWindowHtml(data);}
+           });
+         });
+         
+         marker_manager.addMarker(marker_<%= venue.id %>, 1);
+    <% end %>
+    
+  }
+}
+if (typeof window.onload != 'function') {
+  window.onload = initialize_google_map_events_map;
+} else {
+  old_before_google_map_events_map = window.onload;
+  window.onload = function() {
+    old_before_google_map_events_map();
+    initialize_google_map_events_map();
+  }
+}
+/* ]]> */</script>
