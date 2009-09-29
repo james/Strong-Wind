@@ -4,6 +4,7 @@ class CreateLocations < ActiveRecord::Migration
       t.float :lat
       t.float :lng
       t.float :accuracy
+      t.datetime :found_at
 
       t.timestamps
     end

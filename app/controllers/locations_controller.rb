@@ -4,12 +4,9 @@ class LocationsController < ApplicationController
 
   def poll
     i = FindMyIphone.new(ENV["mobilemeuser"],ENV["mobilemepw"])
-    location = i.locateMe
-    if location["isRecent"]
-      render :json => Location.create!(:lat => location["latitude"], :lng => location["longitude"], :accuracy => location["accuracy"])
-    else 
-      render :json => Location.last
-    end
+    location = Location.new_from_results(i.locateMe)
+    location.save! unless location.same_as_last?
+    render :json => location
   end
 
 end

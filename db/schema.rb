@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(:version => 20090928133332) do
     t.float    "lat"
     t.float    "lng"
     t.float    "accuracy"
+    t.datetime "found_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

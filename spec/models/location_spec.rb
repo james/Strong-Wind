@@ -17,16 +17,14 @@ describe Location do
   end
   
   it "should be able to save from findmyiphone results hash" do
-    location = Location.save_from_results(@result)
+    location = Location.new_from_results(@result)
     location.lat.should == 51.521786
     location.lng.should == -0.076291
+    location.accuracy.should == 50
+    location.found_at.should == "September 29, 2009 9:22 AM".to_time
   end
   
-  it "should not save if result is the same as the last result" do
-    Location.count.should == 0
-    Location.save_from_results(@result)
-    Location.count.should == 1
-    Location.save_from_results(@result)
-    Location.count.should == 1
+  it "should know if it's a duplicate" do
+    Location.new_from_results(@result).duplicate_of?(Location.new_from_results(@result)).should be_true
   end
 end
