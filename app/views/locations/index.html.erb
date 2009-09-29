@@ -58,6 +58,6 @@ Terribly awful hacky code at <a href="http://github.com/james/Strong-Wind">githu
 
 <ul>
   <% Location.all.each do |location| %>
-    <li><%= location.lat %>, <%= location.lng %>, <%= location.accuracy %></li>
+    <li><%= location.lat %>, <%= location.lng %>, <%= location.found_at %></li>
   <% end %>
 </ul>
