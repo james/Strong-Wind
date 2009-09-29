@@ -1,5 +1,6 @@
 class LocationsController < ApplicationController
   def index
+    redirect_to root_path and return if request.path == "/locations"
   end
 
   def poll
